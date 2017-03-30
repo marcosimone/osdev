@@ -80,18 +80,32 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 	const size_t index = y * VGA_WIDTH + x;
 	terminal_buffer[index] = vga_entry(c, color);
 }
-
+void terminal_shift(){
+	size_t index = 0;
+	for(size_t y = 0; y < VGA_HEIGHT; y++){
+		for(size_t x = 0; x < VGA_WIDTH; x++){
+			index = y*VGA_WIDTH + x;
+			terminal_buffer[index] = terminal_buffer[index+VGA_WIDTH];
+		}
+	}
+	--terminal_row;
+	
+}
 void terminal_putchar(char c) {
 	if(c == '\n'){
 		terminal_column=0;
-		++terminal_row;
+		if (++terminal_row == VGA_HEIGHT){
+                        terminal_shift();
+                }
 		return;
-	}	
-	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+	}else{	
+		terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+	}
 	if (++terminal_column == VGA_WIDTH) {
 		terminal_column = 0;
-		if (++terminal_row == VGA_HEIGHT)
-			terminal_row = 0;
+		if (++terminal_row == VGA_HEIGHT){
+			terminal_shift();	
+		}
 	}
 }
 
@@ -112,5 +126,32 @@ void kernel_main(void) {
 	terminal_initialize();
 
 	/* Newline support is left as an exercise. */
-	terminal_writestring("Hello, kernel World!\nThis is me testing newline!\n");
+	
+	terminal_writestring("Hello, kernel World! This is line 0\n");
+	terminal_writestring("Hello, kernel World! This is line 1\n");
+	terminal_writestring("Hello, kernel World! This is line 2\n");
+	terminal_writestring("Hello, kernel World! This is line 3\n");
+	terminal_writestring("Hello, kernel World! This is line 4\n");
+	terminal_writestring("Hello, kernel World! This is line 5\n");
+	terminal_writestring("Hello, kernel World! This is line 6\n");
+	terminal_writestring("Hello, kernel World! This is line 7\n");
+	terminal_writestring("Hello, kernel World! This is line 8\n");
+	terminal_writestring("Hello, kernel World! This is line 9\n");
+	terminal_writestring("Hello, kernel World! This is line 10\n");
+	terminal_writestring("Hello, kernel World! This is line 11\n");
+	terminal_writestring("Hello, kernel World! This is line 12\n");
+	terminal_writestring("Hello, kernel World! This is line 13\n");
+	terminal_writestring("Hello, kernel World! This is line 14\n");
+	terminal_writestring("Hello, kernel World! This is line 15\n");
+	terminal_writestring("Hello, kernel World! This is line 16\n");
+	terminal_writestring("Hello, kernel World! This is line 17\n");
+	terminal_writestring("Hello, kernel World! This is line 18\n");
+	terminal_writestring("Hello, kernel World! This is line 19\n");
+	terminal_writestring("Hello, kernel World! This is line 20\n");
+	terminal_writestring("Hello, kernel World! This is line 21\n");
+	terminal_writestring("Hello, kernel World! This is line 22\n");
+	terminal_writestring("Hello, kernel World! This is line 23\n");
+	terminal_writestring("Hello, kernel World! This is line 24\n");
+	terminal_writestring("Hello, kernel World! This is line 25\n");	
+	terminal_writestring("Hello, kernel World! This is line 26\n");
 }
